@@ -1,16 +1,17 @@
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer, Glitch, Bloom } from '@react-three/postprocessing'
+import { Model } from './Model'
 export default function Experience()
 {
 
     //make cube rotate slowly over time
     const cube = useRef()
     useFrame(() => {
+        cube.current.rotation.z += 0.01
         cube.current.rotation.x += 0.01
-        cube.current.rotation.y += 0.01
         cube.current.material.color.setHSL(Math.sin(Date.now() * 0.0001), 0.5, 0.5)
     })
 
@@ -26,7 +27,7 @@ export default function Experience()
         [ 2, 0, 0 ]
     ]
     useFrame(() => {
-        cube.current.position.set(...points[Math.floor(Date.now() * 0.0001) % points.length])
+        //cube.current.position.set(...points[Math.floor(Date.now() * 0.0001) % points.length])
     })
     
     return <>
@@ -40,8 +41,8 @@ export default function Experience()
         <ambientLight intensity={ 0.5 } />
         <planeGeometry args={ [ 10, 10 ] } />
         
-        <mesh ref={cube} position={ [ 3, 0, 0 ] } rotation={ [ 0, 0, 0 ] } castShadow>
-            <boxGeometry args={ [ 1, 1, 1 ] } />
+        <mesh ref={cube} position={ [ 0, 0, -5 ] } scale={[0.09, 0.09, 0.09]} rotation={ [90, 0, 0 ] } castShadow>
+            <Model />
             <meshPhongMaterial color={ 0xffffff } emissive={ 0x8a2be2 } emissiveIntensity={2} toneMapped={false}/>
         </mesh>
         
